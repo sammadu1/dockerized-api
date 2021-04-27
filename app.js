@@ -5,7 +5,9 @@ const app = express()
 app.use(express.json());
 
 // list of target phrases as input
-const wordsToReplace = ["Google", "Microsoft", "Amazon", "Deloitte", "Oracle"];
+const wordsToReplace = ["Google", "Deloitte", "Oracle"];
+// const wordsToReplace = ["Google", "Microsoft", "Amazon", "Deloitte", "Oracle"];
+
 
 const stringApi = function (input) {
     let output = input.toLowerCase();
