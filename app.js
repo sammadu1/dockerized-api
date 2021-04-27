@@ -1,40 +1,46 @@
-//initialize express web framework
+// Initialize express web framework
 const express = require("express")
 const app = express()
 
 app.use(express.json());
 
-//list of target keywords
+// list of target phrases as input
 const wordsToReplace = ["Google", "Microsoft", "Amazon", "Deloitte", "Oracle"];
 
-const stringApi = function(input) {
-    let output = input;
-    for (let word of wordsToReplace) {
-        output = output.replace(word, word + "\xA9");//where \xA9 is ASCI code for copyright
+const stringApi = function (input) {
+    let output = input.toLowerCase();
+
+//iterate through words to replace with for each loop
+    for (let word of wordsToReplace){
+        let target = word.toLowerCase();
+        output = output.split(target).join(word+"\xA9");
+
+
     }
     console.log(output)
-    return output;
+    return output; 
 }
 
-
-//Route:
+//routing
 app.get("/string-api/:input", async(request, response) => {
     try {
         const input = request.params.input;
-
+    
         const output = await stringApi(input);
-        if (output == null) return response.status([])
+        // if (output == null) return response.status([])
 
         return response.json({
             "output": output
         })
     } catch (err) {
-        return response.status(400).json(err.message)
+        return response.status(400).json(err.message+ "Format :  {baseURL}/string-api/{input string to  convert}"
+        )
+        console.log("invalid input")
     }
 })
-
+//port to use
 const port = parseInt(process.env.PORT, 10) || 8801
 
-app.listen(8801, () => {
-    console.log(`listening on port 8801 ${process.env.PORT}`)
+app.listen(port, () => {
+    console.log(`listening on port ${port}`)
 })
